@@ -16,13 +16,7 @@ console.log("hello console")
 //       });
 //   });
 // });
-document.getElementById('Button1').addEventListener('click', function() {
-    window.location.href = 'index.html'; 
-});
 
-document.getElementById('Button2').addEventListener('click', function() {
-    window.location.href = 'sectionslider.html'; 
-});
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
