@@ -16,54 +16,139 @@ console.log("hello console")
 //       });
 //   });
 // });
+document.getElementById('Button1').addEventListener('click', function() {
+    window.location.href = 'https://kailachen.github.io/interactivetypologies-drag/'; 
+});
 
+document.getElementById('Button2').addEventListener('click', function() {
+    window.location.href = 'Assignment1-InteractiveTypologies/interactivetypologies-drag/sectionslider.html'; 
+});
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  const scrollContainer = document.querySelector('.scroll-container');
-  const cursorImage = document.getElementById('cursorImage');
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+    const scrollContainer = document.querySelector('.scroll-container');
+    const cursorImage = document.getElementById('cursorImage');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-  scrollContainer.addEventListener('mousedown', (e) => {
-      isDown = true;
-      scrollContainer.classList.add('active');
-      startX = e.pageX - scrollContainer.offsetLeft;
-      scrollLeft = scrollContainer.scrollLeft;
-  });
+    scrollContainer.addEventListener('mousedown', (e) => {
+        isDown = true;
+        scrollContainer.classList.add('active');
+        startX = e.pageX - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+    });
 
-  scrollContainer.addEventListener('mouseleave', () => {
-      isDown = false;
-      scrollContainer.classList.remove('active');
-  });
+    scrollContainer.addEventListener('mouseleave', () => {
+        isDown = false;
+        scrollContainer.classList.remove('active');
+    });
 
-  scrollContainer.addEventListener('mouseup', () => {
-      isDown = false;
-      scrollContainer.classList.remove('active');
-      snapToSection();
-  });
+    scrollContainer.addEventListener('mouseup', () => {
+        isDown = false;
+        scrollContainer.classList.remove('active');
+        //   const sectionWidth = scrollContainer.clientWidth;
+        //   const scrollLeftPosition = scrollContainer.scrollLeft;
+        //   const currentIndex = Math.round(scrollLeftPosition / sectionWidth);
+        //   scrollContainer.scrollTo({
+        //     left: currentIndex * sectionWidth,
+        //     behavior: 'smooth'
+        // });
+    });
 
-  scrollContainer.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - scrollContainer.offsetLeft;
-      const walk = (x - startX) * 3; // The * 3 is to increase the scrolling speed
-      scrollContainer.scrollLeft = scrollLeft - walk;
-  });
+    scrollContainer.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scrollContainer.offsetLeft;
+        const walk = (x - startX) * 3;
+        scrollContainer.scrollLeft = scrollLeft - walk;
+    });
 
-  function snapToSection() {
-      const sectionWidth = scrollContainer.clientWidth;
-      const scrollLeftPosition = scrollContainer.scrollLeft;
-      const currentIndex = Math.round(scrollLeftPosition / sectionWidth);
-      scrollContainer.scrollTo({
-          left: currentIndex * sectionWidth,
-          behavior: 'smooth'
-      });
-  }
-
-  document.addEventListener('mousemove', (e) => {
-      cursorImage.style.left = `${e.pageX}px`;
-      cursorImage.style.top = `${e.pageY}px`;
-  });
+    document.addEventListener('mousemove', (e) => {
+        cursorImage.style.left = `${e.pageX}px`;
+        cursorImage.style.top = `${e.pageY}px`;
+    });
 });
+
+
+// mouse trail https://www.youtube.com/watch?v=aEptSB3fbqM
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let spots = [];
+let hue = 0;
+const mouse = {
+    x: undefined,
+    y: undefined
+};
+canvas.addEventListener("mousemove", function (event) {
+    mouse.x = event.x;
+    mouse.y = event.y;
+    for (let i = 0; i < 3; i++) {
+        spots.push(new Particle());
+    }
+});
+class Particle {
+    constructor() {
+        this.x = mouse.x;
+        this.y = mouse.y;
+        this.size = Math.random() * 2 + 0.2;
+        this.speedX = Math.random() * 2 - 1;
+        this.speedY = Math.random() * 2 - 1;
+        this.color = Math.random() > 0.5 ? "#ADD8E6" : "#8D69BF";
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.1) this.size -= 0.01;
+    }
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function handleParticle() {
+    for (let i = 0; i < spots.length; i++) {
+        spots[i].update();
+        spots[i].draw();
+        for (let j = i; j < spots.length; j++){
+            const dx = spots[i].x - spots[j].x;
+            const dy = spots[i].y - spots[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 90) {
+                ctx.beginPath();
+                ctx.strokeStyle = spots[i].color;
+                ctx.lineWidth = spots[i].size / 10;
+                ctx.moveTo(spots[i].x, spots[i].y);
+                ctx.lineTo(spots[j].x, spots[j].y);
+                ctx.stroke();
+            }
+        }
+        if (spots[i].size <= 0.3) {
+            spots.splice(i, 1); 
+            i--;
+        }
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    handleParticle();
+    hue++;
+    requestAnimationFrame(animate);
+}
+window.addEventListener('resize', function () {
+    canvas.width = this.innerWidth;
+    canvas.height = this.innerHeight;
+    init();
+});
+
+window.addEventListener('mouseout', function () {
+    mouse.x = undefined;
+    mouse.y = undefined
+});
+animate();
