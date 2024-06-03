@@ -51,17 +51,17 @@ section {
 }
 
 section:nth-child(1) {
-    background-image: url(IMG_4564.jpeg);
+    background-image: url(https://raw.githubusercontent.com/kailachen/interactivetypologies-drag/main/images/IMG_4564.jpeg);
     background-size: cover;
 }
 
 section:nth-child(2) {
-    background-image: url(IMG_4601.jpeg);
+    background-image: url(https://github.com/kailachen/interactivetypologies-drag/blob/main/images/IMG_4601.jpeg?raw=true);
     background-size: cover;
 }
 
 section:nth-child(3) {
-    background-image: url(IMG_4846.jpeg);
+    background-image: url(https://github.com/kailachen/interactivetypologies-drag/blob/main/images/IMG_4607.jpeg?raw=true);
     background-size: cover;
 }
 
