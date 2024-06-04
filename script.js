@@ -79,7 +79,7 @@ const mouse = {
 canvas.addEventListener("mousemove", function (event) {
     mouse.x = event.x;
     mouse.y = event.y;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 7; i++) {
         spots.push(new Particle());
     }
 });
@@ -90,7 +90,9 @@ class Particle {
         this.size = Math.random() * 2 + 0.2;
         this.speedX = Math.random() * 2 - 1;
         this.speedY = Math.random() * 2 - 1;
-        this.color = Math.random() > 0.5 ? "#ADD8E6" : "#8D69BF";
+        // this.color = Math.random() > 0.25 ? "#89CFF0" : "#8D69BF";
+        const colors = ["#3258A6", "#022859", "#012840", "#41A681", "#50BF77"];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
     }
     update() {
         this.x += this.speedX;
@@ -118,7 +120,7 @@ function handleParticle() {
                 ctx.strokeStyle = spots[i].color;
                 ctx.lineWidth = spots[i].size / 10;
                 ctx.moveTo(spots[i].x, spots[i].y);
-                ctx.lineTo(spots[j].x, spots[j].y);
+                ctx.lineTo(spots[i].x, spots[j].y);
                 ctx.stroke();
             }
         }
