@@ -91,7 +91,7 @@ class Particle {
         this.speedX = Math.random() * 2 - 1;
         this.speedY = Math.random() * 2 - 1;
         // this.color = Math.random() > 0.25 ? "#89CFF0" : "#8D69BF";
-        const colors = ["#3258A6", "#022859", "#012840", "#41A681", "#50BF77"];
+        const colors = ["#312559", "#012340", "#3B758C", "#41A681", "#50BF77"];
         this.color = colors[Math.floor(Math.random() * colors.length)];
     }
     update() {
