@@ -19,14 +19,14 @@ console.log("hello console")
 
 
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
     const scrollContainer = document.querySelector('.scroll-container');
     const cursorImage = document.getElementById('cursorImage');
     let isDown = false;
     let startX;
     let scrollLeft;
 
-    scrollContainer.addEventListener('mousedown', (e) => {
+    scrollContainer.addEventListener('mousedown', e => {
         isDown = true;
         scrollContainer.classList.add('active');
         startX = e.pageX - scrollContainer.offsetLeft;
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // });
     });
 
-    scrollContainer.addEventListener('mousemove', (e) => {
+    scrollContainer.addEventListener('mousemove', e => {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - scrollContainer.offsetLeft;
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         scrollContainer.scrollLeft = scrollLeft - walk;
     });
 
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', e => {
         cursorImage.style.left = `${e.pageX}px`;
         cursorImage.style.top = `${e.pageY}px`;
     });
